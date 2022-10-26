@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+	 <meta charset="utf-8" />
+	<title>TreeMap</title>
+</head>
+<body>
+	<script>
+		//data - https://www.california-demographics.com/cities_by_population
+
+		const link = 'http://www.w3.org/2000/svg';
+		const svg = document.createElementNS(link, 'svg');
+		svg.setAttribute('width', '750');
+		svg.setAttribute('height', '750');
+
+		const title = document.createElementNS(link, 'text');
+		title.setAttribute("x", "100");
+		title.setAttribute("y", "30");
+		title.setAttribute("fill", "black");
+		title.setAttribute("font-size", "30");
+		title.innerHTML = "California City Population";
+		svg.appendChild(title);
+
+
+		const rect1 = document.createElementNS(link, 'rect');
+		rect1.setAttribute("height", "500");
+		rect1.setAttribute("width", "200");
+		rect1.setAttribute("x", "20");
+		rect1.setAttribute("y", "130");
+		rect1.setAttribute("stroke", "red");
+		rect1.setAttribute("fill", "red");
+		rect1.setAttribute("font-size", "20");
+		svg.appendChild(rect1);
+
+		const text1 = document.createElementNS(link, 'text');
+		text1.setAttribute("x", "30");
+		text1.setAttribute("y", "250");
+		text1.setAttribute("fill", "black");
+		text1.setAttribute("font-size", "30");
+		text1.innerHTML = "Los Angeles";
+		svg.appendChild(text1);
+
+		const rect2 = document.createElementNS(link, 'rect');
+		rect2.setAttribute("height", "133");
+		rect2.setAttribute("width", "200");
+		rect2.setAttribute("x", "230");
+		rect2.setAttribute("y", "130");
+		rect2.setAttribute("stroke", "red");
+		rect2.setAttribute("fill", "red");
+		rect2.setAttribute("font-size", "20");
+		svg.appendChild(rect2);
+
+		const text2 = document.createElementNS(link, 'text');
+		text2.setAttribute("x", "230");
+		text2.setAttribute("y", "250");
+		text2.setAttribute("fill", "black");
+		text2.setAttribute("font-size", "30");
+		text2.innerHTML = "San Diego";
+		svg.appendChild(text2);
+
+		const rect3 = document.createElementNS(link, 'rect');
+		rect3.setAttribute("height", "133");
+		rect3.setAttribute("width", "200");
+		rect3.setAttribute("x", "230");
+		rect3.setAttribute("y", "273");
+		rect3.setAttribute("stroke", "red");
+		rect3.setAttribute("fill", "red");
+		rect3.setAttribute("font-size", "20");
+		svg.appendChild(rect3);
+
+		const text3 = document.createElementNS(link, 'text');
+		text3.setAttribute("x", "230");
+		text3.setAttribute("y", "300");
+		text3.setAttribute("fill", "black");
+		text3.setAttribute("font-size", "30");
+		text3.innerHTML = "San Jose";
+		svg.appendChild(text3);
+
+		const rect4 = document.createElementNS(link, 'rect');
+		rect4.setAttribute("height", "133");
+		rect4.setAttribute("width", "200");
+		rect4.setAttribute("x", "230");
+		rect4.setAttribute("y", "413");
+		rect4.setAttribute("stroke", "red");
+		rect4.setAttribute("fill", "red");
+		rect4.setAttribute("font-size", "20");
+		svg.appendChild(rect4);
+
+		const text4 = document.createElementNS(link, 'text');
+		text4.setAttribute("x", "230");
+		text4.setAttribute("y", "450");
+		text4.setAttribute("fill", "black");
+		text4.setAttribute("font-size", "30");
+		text4.innerHTML = "San Francisco";
+		svg.appendChild(text4);
+
+		const rect5 = document.createElementNS(link, 'rect');
+		rect5.setAttribute("height", "75");
+		rect5.setAttribute("width", "200");
+		rect5.setAttribute("x", "230");
+		rect5.setAttribute("y", "553");
+		rect5.setAttribute("stroke", "red");
+		rect5.setAttribute("fill", "red");
+		rect5.setAttribute("font-size", "20");
+		svg.appendChild(rect5);
+
+		const text5 = document.createElementNS(link, 'text');
+		text5.setAttribute("x", "230");
+		text5.setAttribute("y", "583");
+		text5.setAttribute("fill", "black");
+		text5.setAttribute("font-size", "30");
+		text5.innerHTML = "Berkeley";
+		svg.appendChild(text5);
+
+		const rect6 = document.createElementNS(link, 'rect');
+		rect6.setAttribute("height", "75");
+		rect6.setAttribute("width", "200");
+		rect6.setAttribute("x", "440");
+		rect6.setAttribute("y", "130");
+		rect6.setAttribute("stroke", "red");
+		rect6.setAttribute("fill", "red");
+		rect6.setAttribute("font-size", "20");
+		svg.appendChild(rect6);
+
+		const text6 = document.createElementNS(link, 'text');
+		text6.setAttribute("x", "440");
+		text6.setAttribute("y", "160");
+		text6.setAttribute("fill", "black");
+		text6.setAttribute("font-size", "30");
+		text6.innerHTML = "Carlsbad";
+		svg.appendChild(text6);
+
+		const rect7 = document.createElementNS(link, 'rect');
+		rect7.setAttribute("height", "75");
+		rect7.setAttribute("width", "200");
+		rect7.setAttribute("x", "440");
+		rect7.setAttribute("y", "215");
+		rect7.setAttribute("stroke", "red");
+		rect7.setAttribute("fill", "red");
+		rect7.setAttribute("font-size", "20");
+		svg.appendChild(rect7);
+
+		const text7 = document.createElementNS(link, 'text');
+		text7.setAttribute("x", "440");
+		text7.setAttribute("y", "260");
+		text7.setAttribute("fill", "black");
+		text7.setAttribute("font-size", "30");
+		text7.innerHTML = "Santa Maria";
+		svg.appendChild(text7);
+
+		const rect8 = document.createElementNS(link, 'rect');
+		rect8.setAttribute("height", "75");
+		rect8.setAttribute("width", "200");
+		rect8.setAttribute("x", "440");
+		rect8.setAttribute("y", "305");
+		rect8.setAttribute("stroke", "red");
+		rect8.setAttribute("fill", "red");
+		rect8.setAttribute("font-size", "20");
+		svg.appendChild(rect8);
+
+		const text8 = document.createElementNS(link, 'text');
+		text8.setAttribute("x", "440");
+		text8.setAttribute("y", "340");
+		text8.setAttribute("fill", "black");
+		text8.setAttribute("font-size", "30");
+		text8.innerHTML = "Burbank";
+		svg.appendChild(text8);
+
+		const rect9 = document.createElementNS(link, 'rect');
+		rect9.setAttribute("height", "240");
+		rect9.setAttribute("width", "200");
+		rect9.setAttribute("x", "440");
+		rect9.setAttribute("y", "390");
+		rect9.setAttribute("stroke", "red");
+		rect9.setAttribute("fill", "red");
+		rect9.setAttribute("font-size", "20");
+		svg.appendChild(rect9);
+
+		const text9 = document.createElementNS(link, 'text');
+		text9.setAttribute("x", "440");
+		text9.setAttribute("y", "445");
+		text9.setAttribute("fill", "black");
+		text9.setAttribute("font-size", "30");
+		text9.innerHTML = "Anaheim";
+		svg.appendChild(text9);
+
+		document.body.appendChild(svg);
+	</script>
+</body>
+</html>

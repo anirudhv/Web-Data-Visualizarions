@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+	 <meta charset="utf-8" />
+	<title>Waterfall</title>
+</head>
+<script src="https://code.jquery.com/jquery-3.6.0.js"
+			  integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+			  crossorigin="anonymous"></script>
+<body>
+	<script>
+		//https://www.fool.com/the-ascent/research/average-monthly-expenses/
+		const data = [
+		{id: "0", category: 'Salary', change: 67241},
+		{id: "1", category: 'Housing', change: -20091},
+		{id: "2", category: 'Transportation', change: -9761},
+		{id: "3", category: 'Food', change: -7923},
+		{id: "4", category: 'Entertainment', change: -3226},
+		{id: "5", category: 'Insurance', change: -7296},
+		{id: "6", category: 'Education', change: -1407},
+		{id: "7", category: 'Personal Care', change: -768},
+		{id: "8", category: 'Clothes', change: -1866},
+		{id: "9", category: 'Miscellaneous', change: -2030},
+		{id: "10", category: 'Total', change: null} //Keep this as null, it will be automatically calculated
+		]; 
+
+		let total = 0;
+		for(let i = 0; i < data.length - 1; i++) {
+			total += (data[i].change);
+			data[i].change /= 150;
+			console.log(total);
+		}
+	 	data[data.length - 1].change = total / 150;
+
+		const link = 'http://www.w3.org/2000/svg';
+		const svg = document.createElementNS(link, 'svg');
+		svg.setAttribute('width', 100 + (100 * data.length - 1));
+		svg.setAttribute('height', '650');
+
+		const title = document.createElementNS(link, 'text');
+		title.setAttribute("x", "75");
+		title.setAttribute("y", "30");
+		title.setAttribute("fill", "black");
+		title.setAttribute("font-size", "30");
+		title.innerHTML = "Total Earnings Per Year";
+		svg.appendChild(title);
+
+		const line1 = document.createElementNS(link, "line");
+		line1.setAttribute("x1", "100");
+		line1.setAttribute("x2", "100");
+		line1.setAttribute("y1", "75");
+		line1.setAttribute("y2", "600");
+		line1.setAttribute("stroke", "black");
+		svg.appendChild(line1);
+
+		const line2 = document.createElementNS(link, "line");
+		line2.setAttribute("x1", "100");
+		line2.setAttribute("x2", "250000");
+		line2.setAttribute("y1", "600");
+		line2.setAttribute("y2", "600");
+		line2.setAttribute("stroke", "black");
+		svg.appendChild(line2);
+
+		const yaxis = document.createElementNS(link, 'text');
+		yaxis.setAttribute("x", "200");
+		yaxis.setAttribute("y", "330");
+		yaxis.setAttribute("fill", "black");
+		yaxis.setAttribute("font-size", "20");
+		yaxis.setAttribute("transform", "translate(-310," + (650) + ") rotate(-90)");
+		yaxis.innerHTML = "Amount (in Thousands of US Dollars)";
+		svg.appendChild(yaxis);
+
+		const xaxis = document.createElementNS(link, 'text');
+		xaxis.setAttribute("x", "750");
+		xaxis.setAttribute("y", "635");
+		xaxis.setAttribute("fill", "black");
+		xaxis.setAttribute("font-size", "20");
+		xaxis.innerHTML = "Category";
+		svg.appendChild(xaxis);
+
+		const selected = document.createElementNS(link, 'text');
+		selected.setAttribute("id", "select");
+		selected.setAttribute("x", "400");
+		selected.setAttribute("y", "50");
+		selected.setAttribute("fill", "black");
+		selected.setAttribute("font-size", "20");
+		selected.innerHTML = "";
+		svg.appendChild(selected);		
+
+		for(let i = 0; i < data.length; i++) {
+			const xcap = document.createElementNS(link, 'text');
+			xcap.setAttribute("x", 110 + (100 * i));
+			xcap.setAttribute("y", "615");
+			xcap.setAttribute("fill", "black");
+			xcap.setAttribute("font-size", "15");
+			xcap.innerHTML = data[i].category;
+			svg.appendChild(xcap);
+
+			const ycap = document.createElementNS(link, 'text');
+			ycap.setAttribute("x", "60");
+			ycap.setAttribute("y", 600-(50 * i));
+			ycap.setAttribute("fill", "black");
+			ycap.setAttribute("font-size", "15");
+			ycap.innerHTML = i * 7.7;
+			svg.appendChild(ycap);
+		}
+
+		const bar1 = document.createElementNS(link, 'rect');
+		bar1.setAttribute("id", data[0].id);
+		bar1.setAttribute("class", "bars");
+		bar1.setAttribute("x", 100);
+		bar1.setAttribute("y", 600 - data[0].change);
+		bar1.setAttribute("fill", "#7cf863");
+		bar1.setAttribute("stroke", "#7cf863");
+		bar1.setAttribute("width", "100");
+		bar1.setAttribute("height", (data[0].change));
+		svg.appendChild(bar1);
+
+		let prevy = bar1.getAttribute("y");
+		for(let i = 1; i < data.length - 1; i++) {
+			const bar2 = document.createElementNS(link, 'rect');
+			bar2.setAttribute("id", data[i].id);
+			bar2.setAttribute("class", "bars");
+			bar2.setAttribute("x", 100 + (100 * i));
+			bar2.setAttribute("y", prevy);
+			bar2.setAttribute("fill", "#fe8787");
+			bar2.setAttribute("stroke", "#fe8787");
+			bar2.setAttribute("width", "100");
+			bar2.setAttribute("height", Math.abs(data[i].change));
+			svg.appendChild(bar2);
+			prevy = prevy - data[i].change;
+		}
+		const bar3 = document.createElementNS(link, 'rect');
+		bar3.setAttribute("id", data[data.length - 1].id);
+		bar3.setAttribute("class", "totals");
+		bar3.setAttribute("x", 100 + (100 * (data.length - 1)));
+		bar3.setAttribute("y", 600 - data[data.length - 1].change);
+		bar3.setAttribute("stroke", "#7cf863");
+		bar3.setAttribute("fill", "#7cf863");
+		bar3.setAttribute("width", "100");
+		bar3.setAttribute("height", (data[data.length - 1].change));
+		svg.appendChild(bar3);
+		
+		document.body.appendChild(svg);
+
+		$(document).ready(function() {
+			$(".bars").hover(function() {
+				if($(this).attr("fill") === "#7cf863") {
+					$(this).attr("fill", "green");
+					$(this).attr("stroke", "green");
+				} else {
+					$(this).attr("fill", "red");
+					$(this).attr("stroke", "red");
+				}
+				const temp = parseInt($(this).attr("id"));
+				let change = data[temp].change * 150;
+				$("#select").text("Change: $" + change);
+			}, function() {
+				if($(this).attr("fill") == "green") {
+					$(this).attr("fill", "#7cf863");
+					$(this).attr("stroke", "#7cf863");
+				} else {
+					$(this).attr("fill", "#fe8787");
+					$(this).attr("stroke", "#fe8787");
+				}
+				$("#select").text("");
+			});
+			$(".totals").hover(function(){
+				$("#select").text("Total: $" + Math.ceil(total * 150));
+				$(this).attr("fill", "green");
+				$(this).attr("stroke", "green");
+			}, function(){
+				$("#select").text("");
+				$(this).attr("fill", "#7cf863");
+				$(this).attr("stroke", "#7cf863");
+			});
+		});
+	</script>
+</body>
+</html>

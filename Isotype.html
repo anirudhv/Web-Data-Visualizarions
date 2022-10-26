@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+	 <meta charset="utf-8" />
+	<title>Isotype</title>
+</head>
+<body>
+	<script>
+		//data - https://www.coursehero.com/tutors-problems/Statistics-and-Probability/20025107-A-survey-of-a-class-of-22-third-graders-showed-their-favorite-ice-crea/
+
+		const data = [5, 4, 3, 4, 6];
+
+		const link = 'http://www.w3.org/2000/svg';
+		const svg = document.createElementNS(link, 'svg');
+		svg.setAttribute('width', '750');
+		svg.setAttribute('height', '750');
+
+		const title = document.createElementNS(link, 'text');
+		title.setAttribute("x", "100");
+		title.setAttribute("y", "30");
+		title.setAttribute("fill", "black");
+		title.setAttribute("font-size", "30");
+		title.innerHTML = "Favorite ice cream flavor (3rd grade class)";
+		svg.appendChild(title);
+
+		const title1 = document.createElementNS(link, 'text');
+		title1.setAttribute("x", "20");
+		title1.setAttribute("y", "100");
+		title1.setAttribute("fill", "black");
+		title1.setAttribute("font-size", "30");
+		title1.innerHTML = "Vanilla";
+		svg.appendChild(title1);
+
+		for(let i = 0; i < 5; i++) {
+			const img = document.createElementNS(link, 'image');
+			img.setAttribute("href", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQA1d3wlr9OUT8W1C0mFvEgXfrcoVZqVS3IJg&usqp=CAU");
+			img.setAttribute("x", 30*(i+1) + 20);
+			img.setAttribute("y", 120);
+			img.setAttribute("width", "30");
+			img.setAttribute("height", "30");
+			svg.appendChild(img);
+		}
+
+		const title2 = document.createElementNS(link, 'text');
+		title2.setAttribute("x", "20");
+		title2.setAttribute("y", "200");
+		title2.setAttribute("fill", "black");
+		title2.setAttribute("font-size", "30");
+		title2.innerHTML = "Chocolate";
+		svg.appendChild(title2);
+
+		for(let i = 0; i < 4; i++) {
+			const img = document.createElementNS(link, 'image');
+			img.setAttribute("href", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQA1d3wlr9OUT8W1C0mFvEgXfrcoVZqVS3IJg&usqp=CAU");
+			img.setAttribute("x", 30*(i+1) + 20);
+			img.setAttribute("y", 220);
+			img.setAttribute("width", "30");
+			img.setAttribute("height", "30");
+			svg.appendChild(img);
+		}
+
+		const title3 = document.createElementNS(link, 'text');
+		title3.setAttribute("x", "20");
+		title3.setAttribute("y", "300");
+		title3.setAttribute("fill", "black");
+		title3.setAttribute("font-size", "30");
+		title3.innerHTML = "Strawberry";
+		svg.appendChild(title3);
+
+		for(let i = 0; i < 3; i++) {
+			const img = document.createElementNS(link, 'image');
+			img.setAttribute("href", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQA1d3wlr9OUT8W1C0mFvEgXfrcoVZqVS3IJg&usqp=CAU");
+			img.setAttribute("x", 30*(i+1) + 20);
+			img.setAttribute("y", 320);
+			img.setAttribute("width", "30");
+			img.setAttribute("height", "30");
+			svg.appendChild(img);
+		}
+
+		const title4 = document.createElementNS(link, 'text');
+		title4.setAttribute("x", "20");
+		title4.setAttribute("y", "400");
+		title4.setAttribute("fill", "black");
+		title4.setAttribute("font-size", "30");
+		title4.innerHTML = "Mint Chocolate Chip";
+		svg.appendChild(title4);
+
+		for(let i = 0; i < 4; i++) {
+			const img = document.createElementNS(link, 'image');
+			img.setAttribute("href", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQA1d3wlr9OUT8W1C0mFvEgXfrcoVZqVS3IJg&usqp=CAU");
+			img.setAttribute("x", 30*(i+1) + 20);
+			img.setAttribute("y", 420);
+			img.setAttribute("width", "30");
+			img.setAttribute("height", "30");
+			svg.appendChild(img);
+		}
+
+		const title5 = document.createElementNS(link, 'text');
+		title5.setAttribute("x", "20");
+		title5.setAttribute("y", "500");
+		title5.setAttribute("fill", "black");
+		title5.setAttribute("font-size", "30");
+		title5.innerHTML = "Cookie Dough";
+		svg.appendChild(title5);
+
+		for(let i = 0; i < 6; i++) {
+			const img = document.createElementNS(link, 'image');
+			img.setAttribute("href", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQA1d3wlr9OUT8W1C0mFvEgXfrcoVZqVS3IJg&usqp=CAU");
+			img.setAttribute("x", 30*(i+1) + 20);
+			img.setAttribute("y", 520);
+			img.setAttribute("width", "30");
+			img.setAttribute("height", "30");
+			svg.appendChild(img);
+		}
+
+		document.body.appendChild(svg);
+	</script>
+</body>
+</html>

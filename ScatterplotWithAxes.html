@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Scatterplot with Axes</title>
+		<script src="https://d3js.org/d3.v6.min.js"></script>
+		<style type="text/css">
+			#cap.hidden {
+				display: none;
+			}
+		</style>
+	</head>
+	<body>
+		<p id = "#cap" class = "hidden"></p>
+		<script type="text/javascript">
+
+			//Width and height
+			const w = 600;
+			const h = 600;
+			const padding = 75;
+
+			d3.select("body").append("h1").text("Age vs Average Salary");
+
+			const dataset = [
+							[16, 23920], [20, 30628], [25, 43524], [35, 53144], [45, 53300], [55, 57148], [65, 49348]
+						  ];
+
+			const xScale = d3.scaleLinear()
+								 .domain([0, d3.max(dataset, (d) => { return d[0]; })])
+								 .range([padding, w - padding * 2]);
+
+			const yScale = d3.scaleLinear()
+								 .domain([0, d3.max(dataset, (d) => { return d[1]; })])
+								 .range([h - padding, padding]);
+
+			const aScale = d3.scaleSqrt()
+								 .domain([0, d3.max(dataset, (d) => { return d[1]; })])
+								 .range([0, 10]);
+
+			const xAxis = d3.axisBottom()
+							  .scale(xScale)
+							  .ticks(7)
+
+			const yAxis = d3.axisLeft()
+							  .scale(yScale)
+							  .ticks(7)
+
+			const svg = d3.select("body")
+						.append("svg")
+						.attr("width", w)
+						.attr("height", h);
+
+			const capt = svg.append("text")
+				.attr("id", "coords")
+				.attr("visibility", "hidden");
+
+			svg.selectAll("circle")
+			   .data(dataset)
+			   .enter()
+			   .append("circle")
+			   .attr("fill", "#7ecafc")
+			   .attr("class", "pt")
+			   .attr("cx", (d) => {
+			   		return xScale(d[0]);
+			   })
+			   .attr("cy", (d) => {
+			   		return yScale(d[1]);
+			   })
+			   .attr("r", (d) => {
+			   		return aScale(d[1]);
+			   })
+			   .on("mouseover", (event, d) => {
+			   		const xPosition = (event.pageX) + "px";
+					const yPosition = (event.pageY) + "px";
+			   		const e = svg.nodes();
+			   		const i = e.indexOf(this);
+			   		d3.select("#coords")
+			   			.attr("x", xScale(d[0]) - 10)
+			   			.attr("y", yScale(d[1]) + 21)
+			   			.attr("fill", "red")
+			   			.attr("visibility", "visible")
+			   			.text("Age: " + d[0] + ", " + "Salary: $" + d[1]);
+			   		d3.select(event.target).attr("fill", "blue");
+
+			   })
+			   .on("mouseout", (event, d) => {
+			   		d3.select("#coords").attr("visibility", "hidden");
+			   		d3.select(event.target).attr("fill", "#7ecafc");
+			   });
+
+			svg.append("g")
+				.attr("class", "axis")
+				.attr("transform", "translate(0," + (h - padding) + ")")
+				.call(xAxis);
+			
+			svg.append("g")
+				.attr("class", "axis")
+				.attr("transform", "translate(" + padding + ",0)")
+				.call(yAxis);
+
+			svg.append("text")
+				.attr("x", w/2 - 50)
+				.attr("y", h - 40)
+				.attr("font-weight", "bold")
+				.text("Age");
+
+			svg.append("text")
+				.attr("x", 10)
+				.attr("y", 350)
+				.attr("font-weight", "bold")
+				.text("Salary");
+
+		</script>
+	</body>
+</html>

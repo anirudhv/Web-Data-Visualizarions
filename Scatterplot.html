@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+	 <meta charset="utf-8" />
+	<title>Scatterplot</title>
+</head>
+<body>
+	<script>
+		//data - https://umanitoba.ca/faculties/health_sciences/medicine/units/chs/departmental_units/mchp/education/sas/types_data.html
+
+		const data = [
+		{age: 41, height: 74},
+		{age: 42, height: 68},
+		{age: 32, height: 70},
+		{age: 39, height: 72},
+		{age: 30, height: 66},
+		{age: 33, height: 66},
+		{age: 26, height: 64},
+		{age: 30, height: 71},
+		{age: 53, height: 72},
+		{age: 32, height: 69},
+		{age: 47, height: 69},
+		{age: 34, height: 72},
+		{age: 23, height: 62},
+		{age: 36, height: 75},
+		{age: 31, height: 67},
+		{age: 29, height: 71},
+		{age: 28, height: 65}
+		];
+
+		const link = 'http://www.w3.org/2000/svg';
+		const svg = document.createElementNS(link, 'svg');
+		svg.setAttribute('width', '750');
+		svg.setAttribute('height', '750');
+
+		const title = document.createElementNS(link, 'text');
+		title.setAttribute("x", "75");
+		title.setAttribute("y", "30");
+		title.setAttribute("fill", "black");
+		title.setAttribute("font-size", "30");
+		title.innerHTML = "University of Manitoba Student Age vs Height";
+		svg.appendChild(title);
+
+		const line1 = document.createElementNS(link, "line");
+		line1.setAttribute("x1", "100");
+		line1.setAttribute("x2", "100");
+		line1.setAttribute("y1", "75");
+		line1.setAttribute("y2", "600");
+		line1.setAttribute("stroke", "black");
+		svg.appendChild(line1);
+
+		const line2 = document.createElementNS(link, "line");
+		line2.setAttribute("x1", "100");
+		line2.setAttribute("x2", "700");
+		line2.setAttribute("y1", "600");
+		line2.setAttribute("y2", "600");
+		line2.setAttribute("stroke", "black");
+		svg.appendChild(line2);
+
+		const yaxis = document.createElementNS(link, 'text');
+		yaxis.setAttribute("x", "200");
+		yaxis.setAttribute("y", "330");
+		yaxis.setAttribute("fill", "black");
+		yaxis.setAttribute("font-size", "20");
+		yaxis.setAttribute("transform", "translate(-310," + (500) + ") rotate(-90)");
+		yaxis.innerHTML = "Height (cm)";
+		svg.appendChild(yaxis);
+
+		const xaxis = document.createElementNS(link, 'text');
+		xaxis.setAttribute("x", "250");
+		xaxis.setAttribute("y", "635");
+		xaxis.setAttribute("fill", "black");
+		xaxis.setAttribute("font-size", "20");
+		xaxis.innerHTML = "Age";
+		svg.appendChild(xaxis);
+
+		for(let i = 0; i < data.length; i++) {
+			const circle = document.createElementNS(link, 'circle');
+			circle.setAttribute("cx", 100 + (data[i].age * 10));
+			circle.setAttribute("cy", 600 - (data[i].height * 5));
+			circle.setAttribute("r",  5);
+			circle.setAttribute("stroke", "red");
+			circle.setAttribute("stroke-width", 3);
+			circle.setAttribute("fill", "red");
+			svg.appendChild(circle);
+		}
+
+		for(let i = 1; i <= 6; i++) {
+			const sub = document.createElementNS(link, 'text');
+			sub.setAttribute("x", 100 * i);
+			sub.setAttribute("y", 615);
+			sub.setAttribute("fill", "black");
+			sub.setAttribute("font-size", "black");
+			sub.innerHTML = (10 * i) - 10;
+			svg.appendChild(sub);
+		}
+
+		for(let i = 1; i <= 10; i++) {
+			const sub = document.createElementNS(link, 'text');
+			sub.setAttribute("x", 30);
+			sub.setAttribute("y", 600 - (i * 50));
+			sub.setAttribute("fill", "black");
+			sub.setAttribute("font-size", "black");
+			sub.innerHTML = i * 10;
+			svg.appendChild(sub);
+		}
+
+		document.body.appendChild(svg);
+	</script>
+</body>
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+	 <meta charset="utf-8" />
+	<title>COVID-19 Bubble Chart</title>
+	<script src="https://d3js.org/d3.v6.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script src="papaparse.min.js"></script>
+	<style type="text/css">
+			#tooltip {
+				position: absolute;
+				width: 300px;
+				height: auto;
+				padding: 10px;
+				background-color: #fcff48;
+				-webkit-border-radius: 10px;
+				-moz-border-radius: 10px;
+				border-radius: 10px;
+				-webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+				-moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+				box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+				pointer-events: none;
+			}
+			
+			#tooltip.hidden {
+				display: none;
+			}
+			
+			#tooltip p {
+				margin: 0;
+				font-family: sans-serif;
+				font-size: 16px;
+				line-height: 20px;
+			}
+
+			.button {
+				background-color:black;
+				border:none;
+				color:white;
+				text-align:center;
+				text-decoration:none;
+				font-size:16px;
+			} 
+			.button.selected {
+				background-color:red;
+			}
+			.hidden {
+				display:none;
+			}
+		</style>
+</head>
+<body>
+	<h1 id = "title">COVID-19 Vaccinations in United States</h1>
+	<button id = "data1" class = "button selected">April 1, 2021</button>
+	<button id = "data2" class = "button">April 25, 2021</button>
+	<div id = "svg1"></div>
+	<div id = "svg2" class = "hidden"></div>
+	<div id="tooltip" class="hidden">
+		<p><strong id = "name"></strong></p>
+		<p><span id = "delivered"></span></p>
+		<p><span id = "administered"></span></p>
+	</div>
+	<script>
+		let data = null;
+		const link1 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8g-SDwPmGoNb6QDhYk6KsEDePq1p3JyUxyqQynEfTtLmKEPnDsMA4fx857eP0ptnZ9GC8aeosvDrk/pub?output=csv";
+		const link2 = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4UL3u9h5sXuUFJJNkPwaCyuvbuXIhqdRnQOX9QlOQky17C6bIwkQjAmEhE4MtyKu8RCxa9sl5wjzx/pub?output=csv";
+		Papa.parse(link1, {
+			header: true,
+			download: true,
+			complete: (results) => {
+				console.log(results.data);
+				data = results.data;
+				let total = 0;
+				for(let i = 0; i < data.length; i++) {
+					total += parseInt(data[i]["Total Administrations"]) || 0;
+					if(data[i]["Total Administrations"] == NaN) {
+						console.log("NaN is " + i);
+					}
+				}
+				drawGraph(data, total, "#svg1");
+			}
+		});
+		Papa.parse(link2, {
+			header: true,
+			download: true,
+			complete: (results) => {
+				console.log(results.data);
+				data = results.data;
+				let total = 0;
+				for(let i = 0; i < data.length; i++) {
+					total += parseInt(data[i]["Total Administrations"]) || 0;
+					if(data[i]["Total Administrations"] == NaN) {
+						console.log("NaN is " + i);
+					}
+				}
+				drawGraph(data, total, "#svg2");
+			}
+		});
+		
+
+		document.getElementById("data1").addEventListener("click", ()=> {
+			document.getElementById("svg1").classList.remove("hidden");
+			document.getElementById("svg2").classList.add("hidden");
+			document.getElementById("data1").classList.add("selected");
+			document.getElementById("data2").classList.remove("selected");
+		});
+		document.getElementById("data2").addEventListener("click", ()=> {
+			document.getElementById("svg1").classList.add("hidden");
+			document.getElementById("svg2").classList.remove("hidden");
+			document.getElementById("data1").classList.remove("selected");
+			document.getElementById("data2").classList.add("selected");
+		});
+
+		const drawGraph = (data, total, id) => {
+			const data1 = data.map((d1, i) => {
+				return parseInt(d1["Total Administrations"]);
+			});
+
+			const width = 750;
+			const height = 750;
+
+			const svg = d3.select(id)
+				.append("svg")
+				.attr("width", width)
+				.attr("height", width);
+
+			const mScale = d3.scaleLinear()
+			.domain([500000, 29000000])
+			.range([10, 30]);
+
+			const main = svg.append("circle")
+				.attr("cx", 340)
+				.attr("cy", 340)
+				.attr("r", 275)
+				.attr("fill", "#e3d7bf")
+				.attr("stroke","black")
+				.attr("stroke-width", "3px")
+				.on("mouseover", (event, d) => {
+					const xPos = (event.pageX) + "px";
+					const yPos = (event.pageY) + "px";
+					d3.select("#tooltip")
+						.style("left", xPos)
+						.style("top", yPos)
+						.html("<p><b>Total Number of Vaccinations Administered in United States:</b> " + total + "</p>");
+					d3.select("#tooltip").classed("hidden", false);
+					})
+				.on("mousemove", (event, d) => {
+					const xPos = (event.pageX) + "px";
+					const yPos = (event.pageY) + "px";
+					d3.select("#tooltip")
+						.style("left", xPos)
+						.style("top", yPos)
+						.html("<p><b>Total Number of Vaccinations Administered in United States:</b> " + total + "</p>");
+					d3.select("#tooltip").classed("hidden", false);
+					})
+			   .on("mouseout", () => {
+					d3.select("#tooltip").classed("hidden", true);
+			   });
+
+			const node = svg.append("g")
+			  .selectAll("circle")
+			  .data(data)
+			  .enter()
+			  .append("circle")
+			    .attr("r", (d) => {
+			    	return mScale(d["Total Administrations"]);
+			    })
+			    .attr("cx", width / 2)
+			    .attr("cy", height / 2)
+			    .style("fill", "#f8c048")
+			    .style("fill-opacity", 0.3)
+			    .attr("stroke", "#ffae00")
+			    .style("stroke-width", 4)
+			    	.on("mouseover", (event, d) => {
+					const xPos = (event.pageX) + "px";
+					const yPos = (event.pageY) + "px";
+					const e = svg.nodes();
+					const i = e.indexOf(this);
+					d3.select("#tooltip")
+						.style("left", xPos)
+						.style("top", yPos)						
+						.html("<p><strong id = 'name'>" + d.awardee + "</strong></p><p><span id = 'revenue'><b>Vaccinations Delivered: </b>" + d["Total Deliveries"] + "</span><span id = 'administered'><b>Vaccinations Administered: </b>" + d["Total Administrations"], i, e + "</span></p>");
+					d3.select("#tooltip").classed("hidden", false);
+				})
+			    	.on("mousemove", (event, d) => {
+					const xPos = (event.pageX) + "px";
+					const yPos = (event.pageY) + "px";
+					const e = svg.nodes();
+					const i = e.indexOf(this);
+					d3.select("#tooltip")
+						.style("left", xPos)
+						.style("top", yPos)						
+						.html("<p><strong id = 'name'>" + d.awardee + "</strong></p><p><span id = 'revenue'><b>Vaccinations Delivered: </b>" + d["Total Deliveries"] + "</span><p><span id = 'administered'><b>Vaccinations Administered: </b>" + d["Total Administrations"], i, e + "</span></p>");
+					d3.select("#tooltip").classed("hidden", false);
+				})
+			   .on("mouseout", () => {
+					d3.select("#tooltip").classed("hidden", true);
+			   });
+
+			const simulation = d3.forceSimulation()
+			    .force("center", d3.forceCenter().x(345).y(345)) 
+			    .force("charge", d3.forceManyBody().strength(2)) 
+			    .force("collide", d3.forceCollide().strength(0.3).radius(30).iterations(1))
+
+			simulation
+			    .nodes(data)
+			    .on("tick", (d) => {
+			      node
+			          .attr("cx", (d) => { 
+			          	return d.x; 
+			          })
+			          .attr("cy", (d) => { 
+			          	return d.y; 
+			          })
+			    });
+			}
+	</script>
+</body>
+</html>

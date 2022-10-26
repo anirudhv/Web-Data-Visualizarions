@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+	 <meta charset="utf-8" />
+	<title>Lollipop</title>
+</head>
+<body>
+	<script>
+		//data - https://www.universityofcalifornia.edu/infocenter/fall-enrollment-glance
+		const data = [
+		{name: "LA", number: 44589},
+		{name: "Berkeley", number: 42327},
+		{name: "SD", number: 39576},
+		{name: "Davis", number: 39074},
+		{name: "Irvine", number: 36303},
+		{name: "Riverside", number: 26434},
+		{name: "SB", number: 26179},
+		{name: "SC", number:19161},
+		{name: "Merced", number: 9018}
+		];
+
+		const link = 'http://www.w3.org/2000/svg';
+		const svg = document.createElementNS(link, 'svg');
+		svg.setAttribute('width', '750');
+		svg.setAttribute('height', '750');
+
+		const title = document.createElementNS(link, 'text');
+		title.setAttribute("x", "75");
+		title.setAttribute("y", "30");
+		title.setAttribute("fill", "black");
+		title.setAttribute("font-size", "30");
+		title.innerHTML = "Number of California Residents in UC Schools (2020)";
+		svg.appendChild(title);
+
+		const line1 = document.createElementNS(link, "line");
+		line1.setAttribute("x1", "100");
+		line1.setAttribute("x2", "100");
+		line1.setAttribute("y1", "40");
+		line1.setAttribute("y2", "600");
+		line1.setAttribute("stroke", "black");
+		svg.appendChild(line1);
+
+		const line2 = document.createElementNS(link, "line");
+		line2.setAttribute("x1", "100");
+		line2.setAttribute("x2", "600");
+		line2.setAttribute("y1", "600");
+		line2.setAttribute("y2", "600");
+		line2.setAttribute("stroke", "black");
+		svg.appendChild(line2);
+
+		const yaxis = document.createElementNS(link, 'text');
+		yaxis.setAttribute("x", "200");
+		yaxis.setAttribute("y", "330");
+		yaxis.setAttribute("fill", "black");
+		yaxis.setAttribute("font-size", "20");
+		yaxis.setAttribute("transform", "translate(-310," + (500) + ") rotate(-90)");
+		yaxis.innerHTML = "School";
+		svg.appendChild(yaxis);
+
+		const xaxis = document.createElementNS(link, 'text');
+		xaxis.setAttribute("x", "225");
+		xaxis.setAttribute("y", "635");
+		xaxis.setAttribute("fill", "black");
+		xaxis.setAttribute("font-size", "20");
+		xaxis.innerHTML = "Number of California Residents";
+		svg.appendChild(xaxis);
+
+		const start = 65;
+		let r = 0;
+		let g = 112;
+
+		for(let i = 1; i <= 9; i++) {
+			const sub = document.createElementNS(link, 'text');
+			sub.setAttribute("x", "30");
+			sub.setAttribute("y", (start * i));
+			console.log(start * i);
+			sub.setAttribute("fill", "black");
+			sub.setAttribute("font-size", "15");
+			sub.innerHTML = data[i - 1].name;
+			svg.appendChild(sub);
+
+			const line = document.createElementNS(link, "line");
+			line.setAttribute("x1", "100");
+			line.setAttribute("x2", 100 + data[i - 1].number / 100);
+			line.setAttribute("y1", (start * i));
+			line.setAttribute("y2", (start * i));
+			line.setAttribute("stroke", "rgb(" + r + "," + g + ", 255)");
+			line.setAttribute("stroke-width", "4");
+			svg.appendChild(line);
+
+			const circle = document.createElementNS(link, "circle");
+			circle.setAttribute("cx", 100 + data[i - 1].number / 100);
+			circle.setAttribute("cy", (start * i));
+			circle.setAttribute("r", "10");
+			circle.setAttribute("stroke", "rgb(" + r + "," + g + ", 255)");
+			circle.setAttribute("stroke-width", "4");
+			circle.setAttribute("fill", "rgb(" + r + "," + g + ", 255)");
+			svg.appendChild(circle);
+
+			r += 200/9;
+			g += (200 - 112)/9;
+		}
+
+		let curr = 0;
+		for(let i = 1; i <= 5; i++) {
+			const num = document.createElementNS(link, 'text');
+			num.innerHTML = curr * 100;
+			num.setAttribute("x", curr+= 100);
+			num.setAttribute("y", "615");
+			num.setAttribute("fill", "black");
+			num.setAttribute("font-size", "12");
+			svg.appendChild(num);
+		}
+
+		document.body.appendChild(svg);
+	</script>
+</body>
+</html>

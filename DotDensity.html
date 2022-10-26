@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	 <meta charset="utf-8" />
+	<title>Dot Density</title>
+</head>
+<script src="https://code.jquery.com/jquery-3.6.0.js"
+			  integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+			  crossorigin="anonymous"></script>
+<body>
+	<script>
+		//data - https://polytechnic.purdue.edu/locations?_ga=2.127991692.1293401836.1616399280-1512475038.1583267626
+		const data = [
+		{name: "West Lafayette", latitude: 120.4259, longitude: 230.9081},
+		{name: "Anderson", latitude: 205.1053, longitude: 265.6803},
+		{name: "Columbus", latitude: 190.2014, longitude: 330.9214},
+		{name: "Indianapolis", latitude: 170.7684, longitude: 300.1581},
+		{name: "Kokomo", latitude: 175.4864, longitude: 230.1336},
+		{name: "New Albany", latitude: 200.2856, longitude: 445.8241},
+		{name: "Richmond", latitude: 270.8289, longitude: 300.8902},
+		{name: "South Bend", latitude: 165.6764, longitude: 110.2520}
+		];
+
+		const link = 'http://www.w3.org/2000/svg';
+		const svg = document.createElementNS(link, 'svg');
+		svg.setAttribute('width', '750');
+		svg.setAttribute('height', '750');
+
+		const title = document.createElementNS(link, 'text');
+		title.setAttribute("x", "100");
+		title.setAttribute("y", "30");
+		title.setAttribute("fill", "black");
+		title.setAttribute("font-size", "25");
+		title.innerHTML = "Purdue University Satellite Polytechnic Campuses in Indiana";
+		svg.appendChild(title);
+
+		const map = document.createElementNS(link, "image");
+		map.setAttribute("width", "300");
+		map.setAttribute("height", "600");
+		map.setAttribute("href", "https://gisgeography.com/wp-content/uploads/2020/02/Indiana-Map-1265x1733.jpg");
+		svg.appendChild(map);
+
+		for(let i = 0; i < data.length; i++) {
+		const btn = document.createElementNS(link, "circle");
+			btn.setAttribute("class", "dot");
+			btn.setAttribute("id", i);
+			btn.setAttribute("r", 5);
+			btn.setAttribute("cx", data[i].latitude);
+			btn.setAttribute("cy", data[i].longitude);
+			btn.setAttribute("stroke", "black");
+			btn.setAttribute("stroke-width", "2");
+			btn.setAttribute("fill", "#fe8787");
+			svg.appendChild(btn);
+		}
+		const campus = document.createElementNS(link, "text");
+		campus.setAttribute("id", "selected");
+		campus.setAttribute("x", 225);
+		campus.setAttribute("y", 60);
+		campus.setAttribute("font-size", 20);
+		campus.setAttribute("font-weight", "bold");
+		campus.innerHTML = "";
+		svg.appendChild(campus);
+
+		document.body.appendChild(svg);
+
+		$(document).ready(function() {
+			$(".dot").hover(function() {
+				$("#selected").text("You have selected the " + data[$(this).attr("id")].name + " campus.");
+				$(this).attr("fill", "red");
+			}, function() {
+				$("#selected").text("");
+				$(this).attr("fill", "#fe8787");
+			});
+		})
+	</script>
+</body>
+</html>

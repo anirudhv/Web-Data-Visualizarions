@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+	 <meta charset="utf-8" />
+	<title>Interactive Bar Chart</title>
+	<script src="https://d3js.org/d3.v6.min.js"></script>
+	<style type="text/css">
+
+			rect:hover {
+				fill: red;
+			}
+			
+			#tooltip {
+				position: absolute;
+				width: 200px;
+				height: auto;
+				padding: 10px;
+				background-color: white;
+				-webkit-border-radius: 10px;
+				-moz-border-radius: 10px;
+				border-radius: 10px;
+				-webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+				-moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+				box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+				pointer-events: none;
+			}
+			
+			#tooltip.hidden {
+				display: none;
+			}
+			
+			#tooltip p {
+				margin: 0;
+				font-family: sans-serif;
+				font-size: 16px;
+				line-height: 20px;
+			}
+		</style>
+</head>
+<body>
+	<div id="tooltip" class="hidden">
+		<p><strong id = "name"></strong></p>
+		<p><span id = "revenue"></span></p>
+	</div>
+	<script>
+		const dataset = [
+		{name: "McDonald's", revenue: 40412},
+		{name: "Starbucks", revenue: 21380},
+		{name: "Chick-Fil-A", revenue: 11320},
+		{name: "Taco Bell", revenue: 11293},
+		{name: "Burger King", revenue: 10204},
+		{name: "Subway", revenue: 10200},
+		{name: "Wendy's", revenue: 9762},
+		{name: "Dunkin'", revenue: 9630},
+		{name: "Domino's", revenue: 7044},
+		{name: "Panera Bread", revenue: 5890}
+		]; 
+		let sort = false;
+		const nums = dataset.map(d => {
+			return d.revenue;
+		});
+
+		const width = 500;
+		const height = 500;
+		d3.select("body").append("h1").text("Top 10 Fast Food Restaurants in 2020");
+
+		const svg = d3.select("body")
+			.append("svg")
+			.attr("width", width)
+			.attr("height", height);
+		const scaleX = d3.scaleBand()
+			.domain(d3.range(nums.length))
+			.rangeRound([0, width])
+			.paddingInner(0.05);
+
+		const scaleY = d3.scaleLinear()
+			.domain([0, d3.max(nums)])
+			.range([0, height]);
+		svg.selectAll("rect")
+			.data(dataset)
+			.enter()
+			.append("rect")
+			.attr("class", "bar")
+			.attr("x", (d, i) => {
+				return scaleX(i);
+			})
+			.attr("y", (d) => {
+				return height - scaleY(d.revenue);
+			})
+			.attr("width", scaleX.bandwidth())
+			.attr("height", (d) => {
+				return scaleY(d.revenue);
+			})
+			.attr("fill", "#f86363")
+			.on("click", () => {
+			sort = !sort;
+			svg.selectAll("rect")
+				.sort((a, b) => {
+					if(sort) {
+						return d3.ascending(a.revenue, b.revenue);
+					} else {
+						return d3.descending(a.revenue, b.revenue);
+					}
+				})
+				.transition() 
+				.duration(1000)
+				.attr("x", (d, i) => {
+					return scaleX(i);
+				});
+			})
+			   .on("mouseover", (event, d) => {
+
+					//Get this bar's x/y values, then augment for the tooltip
+					const xPosition = (event.pageX) + "px";
+					const yPosition = (event.pageY) + "px";
+					const e = svg.nodes();
+					const i = e.indexOf(this);
+					d3.select("#tooltip")
+						.style("left", xPosition)
+						.style("top", yPosition)						
+						.html("<p><strong id = 'name'>" + d.name + "</strong></p><p><span id = 'revenue'> Revenue: <b>$" + d.revenue, i, e + "</b></span></p>");
+					d3.select("#tooltip").classed("hidden", false);
+			   
+			   })
+			   .on("mousemove", (event, d) => {
+					const xPosition = (event.pageX) + "px";
+					const yPosition = (event.pageY) + "px";
+					const e = svg.nodes();
+					const i = e.indexOf(this);
+					d3.select("#tooltip")
+						.style("left", xPosition)
+						.style("top", yPosition)
+						.style("background-color", "#fcfb7e")						
+						.html("<p><strong id = 'name'>" + d.name + "</strong></p><p><span id = 'revenue'> Revenue: <b>$" + d.revenue, i, e + "</b></span></p>");
+					d3.select("#tooltip").classed("hidden", false);
+			   })
+			   .on("mouseout", () => {
+					d3.select("#tooltip").classed("hidden", true);
+					
+			   });
+		</script>
+</body>
+</html>

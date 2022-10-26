@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	 <meta charset="utf-8" />
+	<title>Frequency Polygon</title>
+</head>
+<body>
+	<script>
+		//data - https://secure-media.collegeboard.org/digitalServices/pdf/research/2014/STUDENT-SCORE-DISTRIBUTIONS-2014.pdf
+		const data = [
+		{score: 1, number: 2329},
+		{score: 2, number: 4282},
+		{score: 3, number: 4502},
+		{score: 4, number: 3104},
+		{score: 5, number: 3499}
+		];
+
+		const link = 'http://www.w3.org/2000/svg';
+		const svg = document.createElementNS(link, 'svg');
+		svg.setAttribute('width', '750');
+		svg.setAttribute('height', '750');
+
+		const title = document.createElementNS(link, 'text');
+		title.setAttribute("x", "75");
+		title.setAttribute("y", "30");
+		title.setAttribute("fill", "black");
+		title.setAttribute("font-size", "30");
+		title.innerHTML = "AP Music Theory Score Distribution (2014)";
+		svg.appendChild(title);
+
+		const line1 = document.createElementNS(link, "line");
+		line1.setAttribute("x1", "100");
+		line1.setAttribute("x2", "100");
+		line1.setAttribute("y1", "75");
+		line1.setAttribute("y2", "600");
+		line1.setAttribute("stroke", "black");
+		svg.appendChild(line1);
+
+		const line2 = document.createElementNS(link, "line");
+		line2.setAttribute("x1", "100");
+		line2.setAttribute("x2", "600");
+		line2.setAttribute("y1", "600");
+		line2.setAttribute("y2", "600");
+		line2.setAttribute("stroke", "black");
+		svg.appendChild(line2);
+
+		const yaxis = document.createElementNS(link, 'text');
+		yaxis.setAttribute("x", "200");
+		yaxis.setAttribute("y", "330");
+		yaxis.setAttribute("fill", "black");
+		yaxis.setAttribute("font-size", "20");
+		yaxis.setAttribute("transform", "translate(-310," + (500) + ") rotate(-90)");
+		yaxis.innerHTML = "Number of Students";
+		svg.appendChild(yaxis);
+
+		const xaxis = document.createElementNS(link, 'text');
+		xaxis.setAttribute("x", "250");
+		xaxis.setAttribute("y", "635");
+		xaxis.setAttribute("fill", "black");
+		xaxis.setAttribute("font-size", "20");
+		xaxis.innerHTML = "Score";
+		svg.appendChild(xaxis);
+
+		const points = [];
+
+		for(let i = 1; i <= 5; i++) {
+			const xsub = document.createElementNS(link, 'text');
+			xsub.setAttribute("x", 100 * i);
+			xsub.setAttribute("y", "615");
+			xsub.setAttribute("fill", "black");
+			xsub.setAttribute("font-size", "12");
+			xsub.innerHTML = data[i - 1].score;
+			svg.appendChild(xsub);
+
+			const circle = document.createElementNS(link, 'circle');
+			points.push({x: 100 * i, y: 600 - (data[i - 1].number / 10)});
+		}
+
+		for(let i = 0; i < points.length - 1; i++) {
+			const line = document.createElementNS(link, "line");
+			line.setAttribute("x1", points[i].x);
+			line.setAttribute("x2", points[i + 1].x);
+			line.setAttribute("y1", points[i].y);
+			line.setAttribute("y2", points[i + 1].y);
+			line.setAttribute("stroke", "black");
+			svg.appendChild(line);
+		}
+
+		for(let i = 1; i <= 5; i++) {
+
+			const circle = document.createElementNS(link, 'circle');
+			circle.setAttribute("cx", 100 * i);
+			circle.setAttribute("cy", 600 - (data[i - 1].number / 10));
+			circle.setAttribute("r", "5");
+			circle.setAttribute("stroke", "red");
+			circle.setAttribute("stroke-width", "2");
+			circle.setAttribute("fill", "red");
+			svg.appendChild(circle);
+		}
+
+		const num = 6;
+		for(let i = 1; i <= 6; i++) {
+			const ysub = document.createElementNS(link, 'text');
+			ysub.setAttribute("x", "70");
+			ysub.setAttribute("y", 100* i);
+			ysub.setAttribute("fill", "black");
+			ysub.setAttribute("font-size", "12");
+			ysub.innerHTML = (num - i) * 1000;
+			svg.appendChild(ysub);
+		}
+
+
+		document.body.appendChild(svg);
+	</script>
+</body>
+</html>
